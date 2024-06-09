@@ -24,7 +24,7 @@ class DataStorageTest {
         DataReader reader = new DataReader1("src\\main\\java\\com\\data_management\\GenData\\DiastolicPressure.txt");
         DataStorage storage = new DataStorage();
         try {
-            reader.readData(storage);
+            reader.startreadData(storage);
         } catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

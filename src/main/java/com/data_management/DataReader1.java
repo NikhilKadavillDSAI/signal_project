@@ -15,7 +15,7 @@ public class DataReader1 implements DataReader{
         System.out.println("DataReader created!!");      
     }
 
-    @Override
+    
     public void readData(DataStorage dataStorage) throws IOException {
         // TODO Auto-generated method stub
 
@@ -48,6 +48,24 @@ public class DataReader1 implements DataReader{
     // To extract the data from given index in the given array
     private String getString(int pos, String[] toExtractfrm){
         return toExtractfrm[pos].split(": ")[1];
+    }
+
+    @Override
+    public void startreadData(DataStorage dataStorage) throws IOException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'startreadData'");
+    }
+
+    @Override
+    public void stopreadData() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'stopreadData'");
+    }
+
+    @Override
+    public void connectToSource(String sourse) throws IOException {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'connectToSource'");
     }
 
 }

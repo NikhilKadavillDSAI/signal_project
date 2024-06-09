@@ -30,7 +30,8 @@ public class HealthDataSimulator {
     private static int patientCount = 50; // Default number of patients
     private static ScheduledExecutorService scheduler;
     // private static OutputStrategy outputStrategy = new ConsoleOutputStrategy(); // Default output strategy
-    private static OutputStrategy outputStrategy = new fileOutputStrategy("src\\main\\java\\com\\data_management\\GenData");
+    // private static OutputStrategy outputStrategy = new fileOutputStrategy("src\\main\\java\\com\\data_management\\GenData");
+    private static OutputStrategy outputStrategy = new WebSocketOutputStrategy(5566);
     private static final Random random = new Random();
 
     public static void main(String[] args) throws IOException {
@@ -132,6 +133,7 @@ public class HealthDataSimulator {
     }
 
     private static void scheduleTasksForPatients(List<Integer> patientIds) {
+
         ECGDataGenerator ecgDataGenerator = new ECGDataGenerator(patientCount);
         BloodSaturationDataGenerator bloodSaturationDataGenerator = new BloodSaturationDataGenerator(patientCount);
         BloodPressureDataGenerator bloodPressureDataGenerator = new BloodPressureDataGenerator(patientCount);
