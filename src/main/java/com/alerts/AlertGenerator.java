@@ -1,7 +1,12 @@
 package com.alerts;
 
+import java.util.List;
+
+import com.DataEvaluaters.BloodOxygenSaturationevaluater;
+import com.DataEvaluaters.BloodPressureEvaluater;
 import com.data_management.DataStorage;
 import com.data_management.Patient;
+import com.data_management.PatientRecord;
 
 /**
  * The {@code AlertGenerator} class is responsible for monitoring patient data
@@ -36,6 +41,41 @@ public class AlertGenerator {
      */
     public void evaluateData(Patient patient) {
         // Implementation goes here
+
+        Long currTime = Long.parseLong("1717872982956"); // intialize the start time 
+        //Long currTime = Long.parseLong(System.currentTimeMillis()+""); // get the current time from the system
+        
+        // get records from 10 minutes ago till current time
+        List<PatientRecord> records = patient.getRecords(currTime - 10000, currTime);
+
+        Alert Dbp = BloodPressureEvaluater.evaluateBP(records,"DiastollicPressure");
+        boolean Dbptriggered = false;
+        Alert Sbp = BloodPressureEvaluater.evaluateBP(records,"SystollicPressure");
+        boolean Sbptriggered = false;
+
+        Alert BOs = BloodOxygenSaturationevaluater.evaluateBO(records);
+        boolean BOstriggered = false;
+        
+
+        if (Dbp!=null & !Dbptriggered){
+            triggerAlert(BOs);
+            Dbptriggered=true;
+        }
+
+        if (Sbp!=null & !Sbptriggered){
+            if (BOs!=null & !BOstriggered){
+                // trigger Hypotensive Hypoxemia alert
+                triggerAlert(new Alert(patient.getPatientId()+"", "Hypotensive Hypoxemia Alert", currTime));
+                BOstriggered=true;
+            }
+            triggerAlert(Sbp);
+            Sbptriggered=true;
+        }
+
+        if (BOs!=null & !BOstriggered){
+            triggerAlert(BOs);
+            BOstriggered=true;
+        }
     }
 
     /**
@@ -48,5 +88,9 @@ public class AlertGenerator {
      */
     private void triggerAlert(Alert alert) {
         // Implementation might involve logging the alert or notifying staff
+        String alertString = "PatientID: "+alert.getPatientId()+" Timestamp: "+alert.getTimestamp()+" Label: "+alert.getCondition();
+
+        System.out.println(alertString);
+
     }
 }

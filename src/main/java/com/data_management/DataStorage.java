@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+
 import com.alerts.AlertGenerator;
 
 /**
@@ -85,19 +87,33 @@ public class DataStorage {
     public static void main(String[] args) {
         // DataReader is not defined in this scope, should be initialized appropriately.
         // DataReader reader = new SomeDataReaderImplementation("path/to/data");
+        DataReader BPDreader = new DataReader1("src\\main\\java\\com\\data_management\\GenData\\DiastolicPressure.txt");
+        DataReader BPSreader = new DataReader1("src\\main\\java\\com\\data_management\\GenData\\SystolicPressure.txt");
+        DataReader BOSreader = new DataReader1("src\\main\\java\\com\\data_management\\GenData\\Saturation.txt");
         DataStorage storage = new DataStorage();
 
         // Assuming the reader has been properly initialized and can read data into the
         // storage
         // reader.readData(storage);
+        try{
+            BPDreader.readData(storage);
+            BPSreader.readData(storage);
+            BOSreader.readData(storage);
+
+            System.out.println("Data written into storage!!!");
+
+        }catch(Exception e){
+            System.out.println(e);
+        }
 
         // Example of using DataStorage to retrieve and print records for a patient
-        List<PatientRecord> records = storage.getRecords(1, 1700000000000L, 1800000000000L);
+        List<PatientRecord> records = storage.getRecords(41, 1700000000000L, 1800000000000L);
         for (PatientRecord record : records) {
             System.out.println("Record for Patient ID: " + record.getPatientId() +
                     ", Type: " + record.getRecordType() +
                     ", Data: " + record.getMeasurementValue() +
                     ", Timestamp: " + record.getTimestamp());
+                    System.out.println("\n");
         }
 
         // Initialize the AlertGenerator with the storage
@@ -106,6 +122,7 @@ public class DataStorage {
         // Evaluate all patients' data to check for conditions that may trigger alerts
         for (Patient patient : storage.getAllPatients()) {
             alertGenerator.evaluateData(patient);
+            // System.out.println("yes");
         }
     }
 }

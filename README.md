@@ -67,3 +67,6 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ## Project Members
  - Student ID: i6349328
+
+## UML Diagrams
+ - Week 2 UML diagrams are in the uml_models directory.
